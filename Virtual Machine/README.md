@@ -94,6 +94,7 @@ To be able to use this solution, follow these steps:
 
 2. Plan and apply the Terraform configuration:
     ```sh
+    terraform init
     terraform plan
     terraform apply
     ```
