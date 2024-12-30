@@ -1,0 +1,30 @@
+ # Terraform
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform/
+.terraform.lock.hcl
+
+.tfvars
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfvars files containing sensitive data, can be ignored
+# Comment these lines if you want to include .tfvars files
+
+
+# Ignore override files as they are usually used to override resources locally and should not be shared
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include .terraformrc and terraform.rc if you are using Terraform Cloud to manage CLI configuration
+.terraformrc
+terraform.rc
