@@ -1,0 +1,8 @@
+subscription_id = ""
+resource_prefix = ""
+tags_vmgroup    = ""
+location        = ""
+admin_username  = ""
+admin_password  = ""
+vm_size         = ""
+os_disk_name    = ""
