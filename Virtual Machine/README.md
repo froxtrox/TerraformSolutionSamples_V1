@@ -48,7 +48,7 @@ To be able to use this solution, follow these steps:
 
     Open a command line prompt with Azure CLI installed, and execute the following scripts:
     ```sh
-    az group create -l uksouth -n <your_resource_group_name>
+    az group create -l <your_azure_location> -n <your_resource_group_name>
     az storage account create -n <your_storage_account_name> -g <your_resource_group_name>
     az storage container create -n tfstate --account-name <your_storage_account_name>
     ```
