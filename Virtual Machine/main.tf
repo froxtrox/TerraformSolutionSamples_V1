@@ -11,19 +11,20 @@ terraform {
     storage_account_name = "<STORAGE_ACCOUNT_NAME>"
   }
 }
- 
-resource "azurerm_resource_group" "VM01-staging-rg-uks" {
-  name     = "${var.resource_prefix}-rg-uks"
+
+resource "azurerm_resource_group" "devuks-webrg" {
+  name     = "${var.resource_prefix}rg"
   location = var.location
+
   tags = {
     "vm-group" = var.tags_vmgroup
   }
 }
 
-resource "azurerm_public_ip" "VM01-staging-pip-uks" {
-  name                = "${var.resource_prefix}-ip"
-  resource_group_name = azurerm_resource_group.VM01-staging-rg-uks.name
-  location            = azurerm_resource_group.VM01-staging-rg-uks.location
+resource "azurerm_public_ip" "devuks-webip" {
+  name                = "${var.resource_prefix}ip"
+  resource_group_name = azurerm_resource_group.devuks-webrg.name
+  location            = azurerm_resource_group.devuks-webrg.location
   allocation_method   = "Static"
 
   tags = {
@@ -32,13 +33,12 @@ resource "azurerm_public_ip" "VM01-staging-pip-uks" {
 
   ip_tags = {}
   zones   = ["1"]
-
 }
 
-resource "azurerm_network_security_group" "VM01-staging-nsg-uks" {
-  name                = "${var.resource_prefix}-nsg"
-  resource_group_name = azurerm_resource_group.VM01-staging-rg-uks.name
-  location            = azurerm_resource_group.VM01-staging-rg-uks.location
+resource "azurerm_network_security_group" "devuks-webnsg" {
+  name                = "${var.resource_prefix}nsg"
+  resource_group_name = azurerm_resource_group.devuks-webrg.name
+  location            = azurerm_resource_group.devuks-webrg.location
 
   lifecycle {
     create_before_destroy = true
@@ -59,20 +59,17 @@ resource "azurerm_network_security_group" "VM01-staging-nsg-uks" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-
 }
-
 
 resource "azurerm_network_interface_security_group_association" "example" {
-  network_interface_id      = azurerm_network_interface.VM01-staging-ni-uks.id
-  network_security_group_id = azurerm_network_security_group.VM01-staging-nsg-uks.id
+  network_interface_id      = azurerm_network_interface.devuks-webni01.id
+  network_security_group_id = azurerm_network_security_group.devuks-webnsg.id
 }
 
-
-resource "azurerm_virtual_network" "VM01-staging-vnet-uks" {
-  name                = "${var.resource_prefix}-vnet"
-  resource_group_name =azurerm_resource_group.VM01-staging-rg-uks.name
-  location            = azurerm_resource_group.VM01-staging-rg-uks.location
+resource "azurerm_virtual_network" "devuks-webvnet" {
+  name                = "${var.resource_prefix}vnet"
+  resource_group_name = azurerm_resource_group.devuks-webrg.name
+  location            = azurerm_resource_group.devuks-webrg.location
 
   address_space = var.address_space
 
@@ -81,19 +78,17 @@ resource "azurerm_virtual_network" "VM01-staging-vnet-uks" {
   }
 }
 
-
-resource "azurerm_subnet" "VM01-staging-subnet-uks" {
+resource "azurerm_subnet" "devuks-websubnet" {
   name                 = "default"
-  resource_group_name  = azurerm_resource_group.VM01-staging-rg-uks.name
-  virtual_network_name = azurerm_virtual_network.VM01-staging-vnet-uks.name
+  resource_group_name  = azurerm_resource_group.devuks-webrg.name
+  virtual_network_name = azurerm_virtual_network.devuks-webvnet.name
   address_prefixes     = var.subnet_prefix
 }
 
-
-resource "azurerm_network_interface" "VM01-staging-ni-uks" {
-  name                = "${var.resource_prefix}_z1"
-  location            = azurerm_resource_group.VM01-staging-rg-uks.location
-  resource_group_name = azurerm_resource_group.VM01-staging-rg-uks.name
+resource "azurerm_network_interface" "devuks-webni01" {
+  name                = "${var.resource_prefix}ni01"
+  location            = azurerm_resource_group.devuks-webrg.location
+  resource_group_name = azurerm_resource_group.devuks-webrg.name
 
   lifecycle {
     create_before_destroy = true
@@ -101,27 +96,27 @@ resource "azurerm_network_interface" "VM01-staging-ni-uks" {
 
   ip_configuration {
     name                          = "ipconfig1"
-    public_ip_address_id          = azurerm_public_ip.VM01-staging-pip-uks.id
+    public_ip_address_id          = azurerm_public_ip.devuks-webip.id
     private_ip_address_allocation = "Dynamic"
     private_ip_address_version    = "IPv4"
-    subnet_id                     = azurerm_subnet.VM01-staging-subnet-uks.id
+    subnet_id                     = azurerm_subnet.devuks-websubnet.id
   }
 
   tags = {
-    vm-group = "VM01"
+    vm-group = var.tags_vmgroup
   }
   accelerated_networking_enabled = true
 }
 
-resource "azurerm_windows_virtual_machine" "VM01-staging-vm-uks" {
-  name                = "${var.resource_prefix}-vm-uks"
-  resource_group_name = azurerm_resource_group.VM01-staging-rg-uks.name
-  location            = azurerm_resource_group.VM01-staging-rg-uks.location
+resource "azurerm_windows_virtual_machine" "devuks-webvm01" {
+  name                = "${var.resource_prefix}vm01"
+  resource_group_name = azurerm_resource_group.devuks-webrg.name
+  location            = azurerm_resource_group.devuks-webrg.location
   size                = var.vm_size
   admin_username      = var.admin_username
   admin_password      = var.admin_password
   network_interface_ids = [
-    azurerm_network_interface.VM01-staging-ni-uks.id,
+    azurerm_network_interface.devuks-webni01.id,
   ]
 
   os_disk {
@@ -137,4 +132,3 @@ resource "azurerm_windows_virtual_machine" "VM01-staging-vm-uks" {
   }
 }
 
- 
