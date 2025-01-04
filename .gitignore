@@ -27,6 +27,5 @@ override.tf.json
 
 # Include .terraformrc and terraform.rc if you are using Terraform Cloud to manage CLI configuration
 .terraformrc
-terraform.rc
-Virtual Machine/terraform.tfvars
+terraform.rc 
 *.tfvars
