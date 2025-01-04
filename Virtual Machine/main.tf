@@ -56,7 +56,7 @@ resource "azurerm_network_security_group" "devuks-webnsg" {
     protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "3389"
-    source_address_prefix      = "*"
+    source_address_prefix      = "*" # To be replaced by trusted IP ranges
     destination_address_prefix = "*"
   }
 }
@@ -103,7 +103,7 @@ resource "azurerm_network_interface" "devuks-webni01" {
   accelerated_networking_enabled = true
 }
 
-resource "azurerm_network_interface_security_group_association" "devuks-ni01nsgassoc" {
+resource "azurerm_network_interface_security_group_association" "devuks-webni01nsgassoc" {
   network_interface_id      = azurerm_network_interface.devuks-webni01.id
   network_security_group_id = azurerm_network_security_group.devuks-webnsg.id
 }
