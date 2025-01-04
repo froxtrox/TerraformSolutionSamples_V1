@@ -10,8 +10,6 @@ override.tf.json
 .terraform/
 .terraform.lock.hcl
 
-.tfvars
-
 # Local .terraform directories
 **/.terraform/*
 
@@ -28,4 +26,3 @@ override.tf.json
 # Include .terraformrc and terraform.rc if you are using Terraform Cloud to manage CLI configuration
 .terraformrc
 terraform.rc 
-*.tfvars
