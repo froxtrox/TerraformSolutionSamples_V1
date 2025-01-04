@@ -1,8 +1,0 @@
-subscription_id = "<YOUR_SUBSCRIPTION_ID>"
-resource_prefix = "<RESOURCE_PREFIX>"
-tags_vmgroup    = "<TAGS_VM_GROUP>"
-location        = "<LOCATION>"
-admin_username  = "<ADMIN_USERNAME>"
-admin_password  = "<ADMIN_PASSWORD>"
-vm_size         = "<VM_SIZE>"
-os_disk_name    = "<OS_DISK_NAME>"
