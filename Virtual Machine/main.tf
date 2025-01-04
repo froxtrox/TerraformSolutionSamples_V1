@@ -61,11 +61,6 @@ resource "azurerm_network_security_group" "devuks-webnsg" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "example" {
-  network_interface_id      = azurerm_network_interface.devuks-webni01.id
-  network_security_group_id = azurerm_network_security_group.devuks-webnsg.id
-}
-
 resource "azurerm_virtual_network" "devuks-webvnet" {
   name                = "${var.resource_prefix}vnet"
   resource_group_name = azurerm_resource_group.devuks-webrg.name
@@ -106,6 +101,11 @@ resource "azurerm_network_interface" "devuks-webni01" {
     vm-group = var.tags_vmgroup
   }
   accelerated_networking_enabled = true
+}
+
+resource "azurerm_network_interface_security_group_association" "devuks-ni01nsgassoc" {
+  network_interface_id      = azurerm_network_interface.devuks-webni01.id
+  network_security_group_id = azurerm_network_security_group.devuks-webnsg.id
 }
 
 resource "azurerm_windows_virtual_machine" "devuks-webvm01" {
