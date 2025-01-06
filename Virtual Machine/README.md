@@ -4,7 +4,7 @@
 This terraform project scaffolds an azure virtual machine environment with network security configured.
 
 
-## Diagram
+## Architecture Diagram
 
 ```mermaid
 graph TD;
